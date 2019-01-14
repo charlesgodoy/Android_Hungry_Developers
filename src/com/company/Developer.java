@@ -1,46 +1,53 @@
 package com.company;
 
-public class Developer implements Runnable {
+public class Developer extends Thread {
 
-    private Spoon<Integer> data;
-    Developer developer;
+    private Spoon spoonLeft;
+    private Spoon spoonRight;
+    private String name;
 
-    public Developer(Spoon<Integer> data, Developer developer) {
-        this.data = data;
-        this.developer = developer;
+    public Developer(Spoon spoonLeft, Spoon spoonRight, String name) {
+        this.spoonLeft = spoonLeft;
+        this.spoonRight = spoonRight;
+        this.name = name;
     }
 
-    public void think() {
+    public void run() {
 
-        System.out.println("Is left spoon available?");
-
-        System.out.println("Is right spoon available?");
+//        System.out.println("Is left spoon available?");
+//
+//        System.out.println("Is right spoon available?");
 
         try{
-
+            System.out.println(name + " is thinking...");
+            Thread.sleep((long) (Math.random() * 2500));
         } catch (InterruptedException e){
             e.printStackTrace();
+        }
+
+        while(true) {
+            eat();
         }
 
     }
 
     public void eat() {
-        try {
-            Thread.sleep((long) (Math.random() * 10));
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (spoonLeft.pickUp()) {
+            if (spoonRight.pickUp()) {
+                try {
+                    System.out.println(name + "is eating.");
+                    Thread.sleep((long) (Math.random() * 1000));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                spoonLeft.putDown();
+                spoonRight.putDown();
+
+            } else {
+                spoonLeft.putDown();
+            }
         }
     }
-
-    @Override
-    public void run() {
-        while(true) {
-
-            think();
-            eat();
-
-        }
-    }
-
 }

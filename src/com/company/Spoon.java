@@ -1,34 +1,27 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Semaphore;
 
-public class Spoon <T>{
-    private List<T> leftSpoon;
-    private List<T> rightSpoon;
-    private Semaphore lock;
+public class Spoon {
+    private
+    Semaphore spoon = new Semaphore(1);
+    public int id;
 
+    Spoon (int id) {
+        this.id = id;
+    }
 
-    public boolean acquire() {
-        try {
-            lock.acquire();
-            return true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public int id() {
+        return id;
     }
 
 
-    public void pickup(T leftSpoon) {
-        while(!this.acquire()) {}
-        leftSpoon.ad
-        this.putDown();
+    public boolean pickUp() {
+        return spoon.tryAcquire();
     }
 
     public void putDown() {
-        lock.release();
+        spoon.release();
     }
 
 }
